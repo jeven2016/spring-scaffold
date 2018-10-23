@@ -1,0 +1,22 @@
+# By default, spring won't merge it with src/resources/application.yml and only the test/resource/applicaion.yml
+# take effects in this case. Then some settings defined in src/resources/application.yml would be
+# discarded while you run your test code.
+# So a new file application-test.yml is created to leverage spring's profile mechanism to active an additional profile,
+# that can ensure these profiles are enabled in following order for test:
+#   src/resources/application.yml
+#   src/resources/application-dev.yml
+#   src/resources/application-test.yml
+# And the application-test.yml will override other yaml files as mentioned above.
+spring:
+  datasource:
+      url: "jdbc:h2:mem:web;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE"
+      username: root
+      password: NextGen
+      driver-class-name:  org.h2.Driver
+      platform: h2
+      data: classpath:/database/data-h2.sql
+      initialize: true
+      continue-on-error: true #disable fail-fast setting and the application will continue to run if the data-h2.sql has been executed before
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

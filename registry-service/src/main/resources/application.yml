@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: registry-server
+  profiles:
+    active: node1
+  cloud:
+    inetutils:
+      preferred-networks: 192.168.3

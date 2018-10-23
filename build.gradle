@@ -1,0 +1,102 @@
+//apply the dependencies defined in the customized plugin and then the sub projects can access them
+apply from: 'dependencies.gradle'
+
+/**
+ * Apply global settings to all projects
+ */
+allprojects {
+    apply plugin: 'java'
+//    apply plugin: 'groovy'
+    apply plugin: 'maven'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+    apply plugin: 'jacoco'
+//    apply plugin: 'pmd'
+    apply plugin: 'checkstyle'
+    apply plugin: 'findbugs'
+
+    sourceCompatibility = projectInfo.sourceCompatibility
+    targetCompatibility = projectInfo.targetCompatibility
+
+    group = projectInfo.group
+    version = projectInfo.version
+
+}
+
+subprojects { subpro ->
+    String folders = project.property('custom.project.folders')
+    String[] paths = subpro.path.split(':');//split the path with colon
+    String subproName = paths.last();
+
+    //ignore the project folders since they aren't real gradle projects
+    if (folders?.contains(subproName)) {
+        println "info: ${subproName} is ignored to apply default settings."
+        return;
+    }
+
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    buildscript {
+        repositories {
+            mavenLocal() //firstly try to retrieve jars from local maven repository
+            maven {
+                //then try to retrieve jars from nexus
+                url nexusPublicUrl
+            }
+            jcenter()
+        }
+
+        dependencies {
+            classpath libs.'spring-boot-gradle-plugin'
+//            classpath libs.'dependency-management-plugin'
+        }
+    }
+
+    repositories {
+        mavenLocal() //firstly try to retrieve jars from local maven repository
+        maven {
+            //then try to retrieve jars from nexus
+            url nexusPublicUrl
+        }
+    }
+
+    configurations {
+        //exclude commons-loggin since we use logback+slf4j libs
+        all*.exclude module: 'commons-logging'
+    }
+
+    /**
+     * List all dependencies of this project
+     */
+    task listJars(description: 'Display all dependencies.') << {
+        configurations.compile.each { File file -> println "\t" + file.name }
+    }
+
+    checkstyle {
+        toolVersion = "7.1"
+        configFile rootProject.file('config/checkstyle/checkstyle.xml')
+    }
+
+    findbugs {
+        ignoreFailures = true
+        effort = "max"
+    }
+
+    /*pmd {
+        ignoreFailures = true
+        ruleSetFiles = rootProject.files("config/pmd/pmd-rulesets.xml")
+    }*/
+
+    jacoco {
+        toolVersion = "0.7.6.201602180812"
+    }
+
+    jacocoTestReport {
+        group = "Reporting"
+        reports {
+            xml.enabled true
+            html.destination "${buildDir}/reports/coverage"
+        }
+    }
+
+}

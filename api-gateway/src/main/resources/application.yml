@@ -1,0 +1,33 @@
+server:
+  port: 9020
+
+zuul:
+  routes:
+    # proxy the rest service that has registered in eureka
+    rest-service-demo:   # proxy url http://ip:9020/api/rest/demo/**
+      path: /**
+      serviceId: rest-service-demo
+    auth-service:
+      path: /**
+      serviceId: auth-service
+  host:
+    max-total-connections: 200
+    max-per-route-connections: 20
+  ignored-services: '*'  # ignore other services
+#  ignored-patterns:  # ignore some specific uri, like /**/admin/**
+  retryable: false  # don't retry the available route
+  prefix: /api
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+      inetutils:
+        preferred-networks: 192.168.3

@@ -1,0 +1,8 @@
+1. auth拦截
+  ａ) request发到zuul,校验token,没有token,转到auth ui,输入用户名密码登录。
+  获取到token,并且返回。客户端在头部设置该token,可以正常获取资源。
+  b) zuul拦截所有请求，调用auth service 校验token是否合法
+  c) 调研auth ui是部署在auth工程下，还是可以独立部署至nginx.
+     调研auth跟api gateway是否分开部署？合并一个工程？
+
+２　clientId, secret相关的client信息，使用db存储

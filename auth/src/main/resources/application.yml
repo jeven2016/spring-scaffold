@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: auth-service
+server:
+  context-path: /auth
+  port: 9030
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka
+  instance:
+    prefer-ip-address: true
+
+#We can control exactly when our session gets created and how Spring Security will interact with it:
+#
+#always – a session will always be created if one doesn’t already exist
+#ifRequired – a session will be created only if required (default)
+#never – the framework will never create a session itself but it will use one if it already exists
+#stateless – no session will be created or used by Spring Security
+#security:
+#  sessions: stateless
+#  user:
+#    name: user
+#    password: 123
+#  basic:
+#    enabled: true
+
+logging:
+  level: debug
+
+

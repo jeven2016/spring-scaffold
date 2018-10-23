@@ -1,0 +1,117 @@
+# Spring Profiles provide a way to segregate parts of your application configuration and make
+# it only available in certain environments. Any @Component or @Configuration can be marked with
+# @Profile to limit when it is loaded.
+#
+# In the normal Spring way, you can use a spring.profiles.active Environment property to specify
+# which profiles are active. You can specify the property in any of the usual ways
+# BTW, you can verify the configuration via http://ip:8080/mgnt/configprops
+http:
+  port: 5804 # expose a port for tomcat's HTTP connector
+
+server:
+  port: 5803  # Secure port for HTTPS.
+  compression:
+    enabled: true # If response compression is enabled.
+    mime-types: application/json
+    min-response-size: 2048  #2KB
+  session:
+    timeout: 1800
+    cookie:
+      http-only: true
+  tomcat:
+    max-threads: 200
+    protocol-header: x-forwarded-proto #configure the header if nginx is used as reversed proxy
+  use-forward-headers: true #refer to http://docs.spring.io/spring-boot/docs/1.3.0.RELEASE/reference/htmlsingle/#howto-enable-https
+  ssl:
+    key-store: classpath:ssl/com_oracle_communications_incubation.jks
+    key-store-password: oracle
+    key-password: oracle
+  error:
+    whitelabel:
+      enabled: false  #disable the Whitelabel Error Page
+  servlet-path: /
+
+# Enable Spring Boot Actuator: Production-ready features to monitor and manage this application
+# when it’s pushed to production using HTTP endpoints, in addition the JMX endpoints is disabled.
+management:
+  port: 8090  # enable http endpoints for spring actuator
+  ssl:
+    enabled: false
+  security:
+    #roles: ADMIN #the role required to pass the spring security authentication
+    enabled: false
+  context-path: /mgnt
+  health:
+    defaults:
+      enabled: true
+    status:
+#      order: FATAL, DOWN, OUT_OF_SERVICE, UNKNOWN, UP
+info:
+  microservice:
+    name: "web"
+    description: "a web microservice"
+    version: "0.1"
+
+endpoints:
+  actuator:
+    enabled: true
+    sensitive: false
+  beans:
+    id: applicaion
+  shutdown:
+    enabled: false
+  jmx:
+    enabled: false #Disabling JMX endpoints
+
+spring:
+  cache:
+    # Enable ehcache (in-memory cache)
+    ehcache:
+      config: classpath:ehcache.xml
+  aop:
+    auto: true  # Add @EnableAspectJAutoProxy.
+    proxy-target-class: true # Whether subclass-based (CGLIB) proxies are to be created (true) as opposed to standard Java interface-based proxies (false).
+  resources:
+    static-locations: classpath:/web
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  profiles:
+    #you can change it to dev to active application-dev.yml for development
+    active: dev
+  main:
+    web-environment: true # this is a web app
+  datasource:
+      tomcat:
+        time-between-eviction-runs-millis: 300000
+        min-evictable-idle-time-millis: 300000
+        max-wait: 10000
+        max-active: 50
+        max-idle: 20
+        min-idle: 5
+        remove-abandoned: true
+        remove-abandoned-timeout: 40
+        num-tests-per-eviction-run: 0
+        test-while-idle: false
+        test-on-borrow: true # Validate the connection before borrowing it from the pool. to avoid SQL exception: Connection has already been closed
+  jpa:
+#    database-platform: org.hibernate.dialect.MySQL57Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none # Initialize the database by using JPA instead of hibernate to avoid conflict
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: false
+        format_sql: false
+
+
+logging:
+  level:
+    root: INFO
+  file: /var/log/web.log # this setting should be modified together with logback.xml
+
+ohs:
+  uri: https://10.75.171.104:8251
+  username: weblogic
+  password: welcome1

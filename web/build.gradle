@@ -1,0 +1,46 @@
+plugins {
+    id "org.sonarqube" version "2.5"
+}
+apply plugin: 'org.springframework.boot'
+
+configurations.all {
+    exclude group: "commons-logging", module: "commons-logging"
+}
+
+sonarqube {
+    properties {
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.exclusion", "src/main/resources/**"
+        property "sonar.projectVersion", "${projectInfo.version}"
+    }
+}
+
+jar {
+    baseName = 'web'
+//    version =  '0.1'
+}
+
+
+dependencies {
+    compile libs.'spring-boot-starter-web'
+    compile libs.'spring-boot-starter-data-jpa'
+    compile libs.'spring-boot-starter-aop'
+//    compile libs.'spring-boot-starter-security'
+    compile libs.'spring-boot-starter-actuator'
+    compile libs.'spring-boot-starter-cache'
+    compile libs.'lombok'
+    runtime libs.mysql
+    compile libs.'spring-boot-starter-tomcat'
+    compile libs.'springfox-swagger2'
+    compile libs.'springfox-swagger-ui'
+
+    //only for dev mode
+    runtime libs.'h2-database'
+
+    testCompile libs.'spring-security-test'
+    testCompile libs.'spring-boot-starter-test'
+    testCompile libs.'powermock-module-junit4'
+    testCompile libs.'powermock-api-mockito2'
+    testCompile libs.'powermock-module-junit4-rule-agent'
+
+}

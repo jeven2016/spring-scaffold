@@ -1,0 +1,12 @@
+rootProject.name = 'spring-scaffold'
+include 'web'
+include 'local-storm'
+include 'api-gateway'
+include 'registry-service'
+include 'rest-service-demo'
+include 'event-source-test'
+include 'sse'
+include 'auth'
+include 'testwar'
+//include 'jdk_test'
+

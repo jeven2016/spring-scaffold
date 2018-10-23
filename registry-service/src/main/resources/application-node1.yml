@@ -1,0 +1,19 @@
+server:
+  port: 9000
+
+
+
+#NEED to add node1 and node2 hostname into /etc/hosts/
+#define one node and register it in node2
+eureka:
+  instance:
+    appname: node1
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:9001/eureka
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+    enable-self-preservation: false

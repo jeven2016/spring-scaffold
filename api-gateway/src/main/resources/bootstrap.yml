@@ -1,0 +1,4 @@
+# this configuration file only applied for spring cloud, and it would be loaded before application.yml
+spring:
+  application:
+    name: api-gateway

@@ -1,0 +1,56 @@
+ext.projectInfo = [
+        'group'              : 'com.oracle.communications.incubation',
+        'version'            : '0.1',
+        'sourceCompatibility': '1.8',
+        'targetCompatibility': '1.8'
+]
+
+//set the version of mockito to V2.x for powermock since the spring framework still uses an old version v1.x
+//that cannot meet our requirements
+ext['mockito.version'] = '2.8.9'
+
+//The libries that cdc project depends on
+ext.libs = [
+        'spring-boot-gradle-plugin'         : 'org.springframework.boot:spring-boot-gradle-plugin:2.0.0.RELEASE',
+//        'dependency-management-plugin'      : 'io.spring.gradle:dependency-management-plugin',
+
+        'spring-boot-starter-web'           : 'org.springframework.boot:spring-boot-starter-web',
+        'spring-boot-starter-webflux'       : 'org.springframework.boot:spring-boot-starter-webflux',
+        'spring-boot-starter-data-jpa'      : 'org.springframework.boot:spring-boot-starter-data-jpa',
+        'spring-boot-starter-aop'           : 'org.springframework.boot:spring-boot-starter-aop',
+        'spring-boot-starter-test'          : 'org.springframework.boot:spring-boot-starter-test',
+        'spring-boot-starter-security'      : 'org.springframework.boot:spring-boot-starter-security',
+        'spring-boot-starter-actuator'      : 'org.springframework.boot:spring-boot-starter-actuator',
+        'spring-boot-starter-cache'         : 'org.springframework.boot:spring-boot-starter-cache',
+        'spring-security-test'              : 'org.springframework.security:spring-security-test',
+        'spring-boot-starter-tomcat'        : 'org.springframework.boot:spring-boot-starter-tomcat',
+        'mysql'                             : 'mysql:mysql-connector-java',
+        'lombok'                            : 'org.projectlombok:lombok:1.16.16',
+
+        /*spring cloud*/
+        'spring-cloud-dependencies'         : 'org.springframework.cloud:spring-cloud-dependencies:Finchley.M8',
+        'spring-cloud-stream-reactive'      : 'org.springframework.cloud:spring-cloud-stream-reactive',
+
+        'springfox-swagger2'                : 'io.springfox:springfox-swagger2:2.7.0',
+        'springfox-swagger-ui'              : 'io.springfox:springfox-swagger-ui:2.7.0',
+
+        //for dep-checker
+        'groovy-all'                        : 'org.codehaus.groovy:groovy-all',
+        'web-socket'                        : 'org.springframework.boot:spring-boot-starter-websocket',
+        'selenium'                          : 'org.seleniumhq.selenium:selenium-server:3.0.1',
+        'excel-builder'                     : 'com.jameskleeh:excel-builder:0.4.1',
+
+        //These libs are only for dev mode, they wouldn't be shipped for production release.
+        //You can set ext.projectInfo.activeDev to true for development, in this case this application
+        //will use a H2 database instead of mysql for test, and remember to revert it to false
+        //before publishing a release or promoting your changes into Gitlab
+        'h2-database'                       : 'com.h2database:h2',
+
+        //for unit test
+        'powermock-module-junit4'           : 'org.powermock:powermock-module-junit4:1.7.0RC4',
+        'powermock-api-mockito2'            : 'org.powermock:powermock-api-mockito2:1.7.0RC4',
+        'powermock-module-junit4-rule-agent': 'org.powermock:powermock-module-junit4-rule-agent:1.6.6'
+
+]
+
+

@@ -1,0 +1,20 @@
+# spring set the log level to INFO for below components by default,even though the root log level is set to WARN,
+# so we need to explicitly change such log level　and you can verify via spring actuator:
+# https://ip/mgnt/loggers
+logging:
+  level:
+    root: INFO
+
+spring:
+  datasource:
+      url: "jdbc:mysql://10.113.49.219:5810/web?serverTimezone=GMT&autoReconnect=false&useSSL=false"
+      username: root
+      password: Dukw1@m?
+      driver-class-name:  com.mysql.jdbc.Driver
+      platform: mysql
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        use-new-id-generator-mappings: AUTO   # add auto_increment for id
+    database: mysql

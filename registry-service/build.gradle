@@ -1,0 +1,13 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka-server'
+    compile libs.'spring-boot-starter-tomcat'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom libs.'spring-cloud-dependencies'
+    }
+}
